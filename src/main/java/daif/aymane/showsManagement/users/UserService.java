@@ -18,72 +18,53 @@ public class UserService {
     }
 
     public ResponseObject allUsers(){
-        ResponseObject responseObject = new ResponseObject();
-        List<User> users = userRepository.findAll();
-        List<UserResponse> usersResponse= new ArrayList<>();
-        for (User user: users) {
-            UserResponse userResponse = new UserResponse();
-            BeanUtils.copyProperties(user, userResponse,"encryptedPassword");
-            usersResponse.add(userResponse);
-        }
-        String msg = users.size() + " users";
-        responseObject.setSuccess(true);
+        List<UserResponse> usersResponse = copyPropertiesFromDbToResponse();
+        String msg = usersResponse.size() + " users";
+        ResponseObject responseObject = createResponseObject(msg, true);
         responseObject.setData(usersResponse);
-
-        responseObject.setMessage(msg);
         return responseObject;
     }
 
     public ResponseObject addUser(UserRequest userRequest){
-        ResponseObject responseObject = new ResponseObject();
+        ResponseObject responseObject;
         User user = new User();
+        String msg;
+
         BeanUtils.copyProperties(userRequest, user, "password");
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         User createdUser = userRepository.save(user);
-        String msg;
 
         if(userRepository.existsById(user.getId())){
             UserResponse userResponse = new UserResponse();
             BeanUtils.copyProperties(createdUser, userResponse,"encryptedPassword");
             msg = "user with id " + createdUser.getId() + " is created successfully";
-            responseObject.setSuccess(true);
+            responseObject = createResponseObject(msg, true);
             responseObject.getData().add(userResponse);
         }else {
             msg =  "user with id " + createdUser.getId() + " is NOT created";
-            responseObject.setSuccess(false);
-            responseObject.setData(new ArrayList<>());
+            responseObject = createResponseObject(msg, false);
         }
-        responseObject.setMessage(msg);
         return responseObject;
     }
 
     public ResponseObject removeUser(Long userId){
-        ResponseObject responseObject = new ResponseObject();
+        ResponseObject responseObject;
         String msg;
         if(userRepository.existsById(userId)){
             userRepository.deleteById(userId);
+            List<UserResponse> usersResponse = copyPropertiesFromDbToResponse();
             msg = "user with id " + userId + " is deleted successfully";
-            responseObject.setSuccess(true);
-
-            List<User> users = userRepository.findAll();
-            List<UserResponse> usersResponse= new ArrayList<>();
-            for (User user: users) {
-                UserResponse userResponse = new UserResponse();
-                BeanUtils.copyProperties(user, userResponse,"encryptedPassword");
-                usersResponse.add(userResponse);
-            }
+            responseObject = createResponseObject(msg, true);
             responseObject.setData(usersResponse);
         }else {
             msg = "user with id " + userId + " does not exist";
-            responseObject.setSuccess(false);
-            responseObject.setData(new ArrayList<>());
+            responseObject = createResponseObject(msg, false);
         }
-        responseObject.setMessage(msg);
         return responseObject;
     }
 
     public ResponseObject loginUser(UserRequest userRequest){
-        ResponseObject responseObject = new ResponseObject();
+        ResponseObject responseObject;
         String msg;
         String usernameFromRequest = userRequest.getUsername();
         String passwordFromRequest = userRequest.getPassword();
@@ -94,20 +75,32 @@ public class UserService {
                 UserResponse userResponse =  new UserResponse();
                 BeanUtils.copyProperties(userFromDb, userResponse,"encryptedPassword");
                 msg = "user with id " + userResponse.getId() + ", is logged successfully";
-                responseObject.setSuccess(true);
+                responseObject = createResponseObject(msg, true);
                 responseObject.getData().add(userResponse);
-            }else {
-                msg = "username or password are invalid";
-                responseObject.setSuccess(false);
-                responseObject.setData(new ArrayList<>());
+                return responseObject;
             }
-        }else {
-            msg = "username or password are invalid";
-            responseObject.setSuccess(false);
-            responseObject.setData(new ArrayList<>());
         }
-        responseObject.setMessage(msg);
+        msg = "username or password are invalid";
+        responseObject = createResponseObject(msg, false);
         return responseObject;
 
+    }
+
+    private List<UserResponse> copyPropertiesFromDbToResponse(){
+        List<User> users = userRepository.findAll();
+        List<UserResponse> usersResponse= new ArrayList<>();
+        for (User user: users) {
+            UserResponse userResponse = new UserResponse();
+            BeanUtils.copyProperties(user, userResponse,"encryptedPassword");
+            usersResponse.add(userResponse);
+        }
+        return usersResponse;
+    }
+
+    private ResponseObject createResponseObject(String msg, boolean isSuccess){
+        ResponseObject responseObject = new ResponseObject();
+        responseObject.setMessage(msg);
+        responseObject.setSuccess(isSuccess);
+        return responseObject;
     }
 }
