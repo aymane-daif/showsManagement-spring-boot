@@ -17,7 +17,7 @@ public class UserController {
         return userService.allUsers();
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseObject createUser(@RequestBody UserRequest userRequest){
         return userService.addUser(userRequest);
     }
@@ -25,5 +25,10 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseObject deleteUsers(@PathVariable Long userId){
         return userService.removeUser(userId);
+    }
+
+    @PostMapping("/login")
+    public ResponseObject logUserIn(@RequestBody UserRequest userRequest){
+        return userService.loginUser(userRequest);
     }
 }

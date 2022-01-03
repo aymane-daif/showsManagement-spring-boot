@@ -81,4 +81,33 @@ public class UserService {
         responseObject.setMessage(msg);
         return responseObject;
     }
+
+    public ResponseObject loginUser(UserRequest userRequest){
+        ResponseObject responseObject = new ResponseObject();
+        String msg;
+        String usernameFromRequest = userRequest.getUsername();
+        String passwordFromRequest = userRequest.getPassword();
+        if(userRepository.existsByUsername(usernameFromRequest)){
+            User userFromDb = userRepository.findByUsername(usernameFromRequest);
+            String encryptesPassword = userFromDb.getEncryptedPassword();
+            if(bCryptPasswordEncoder.matches(passwordFromRequest,encryptesPassword)){
+                UserResponse userResponse =  new UserResponse();
+                BeanUtils.copyProperties(userFromDb, userResponse,"encryptedPassword");
+                msg = "user with id " + userResponse.getId() + ", is logged successfully";
+                responseObject.setSuccess(true);
+                responseObject.getData().add(userResponse);
+            }else {
+                msg = "username or password are invalid";
+                responseObject.setSuccess(false);
+                responseObject.setData(new ArrayList<>());
+            }
+        }else {
+            msg = "username or password are invalid";
+            responseObject.setSuccess(false);
+            responseObject.setData(new ArrayList<>());
+        }
+        responseObject.setMessage(msg);
+        return responseObject;
+
+    }
 }
