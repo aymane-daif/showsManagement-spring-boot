@@ -1,16 +1,24 @@
-package daif.aymane.showsManagement.users;
+package daif.aymane.showsManagement.dto;
 
-public class UserRequest {
+public class UserResponse {
+    private Long id;
     private String username;
     private String email;
-    private String password;
 
-    public UserRequest(){}
+    public UserResponse(){}
 
-    public UserRequest(String username, String email, String password) {
+    public UserResponse(Long id, String username, String email) {
+        this.id = id;
         this.username = username;
         this.email = email;
-        this.password=password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -27,13 +35,5 @@ public class UserRequest {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
