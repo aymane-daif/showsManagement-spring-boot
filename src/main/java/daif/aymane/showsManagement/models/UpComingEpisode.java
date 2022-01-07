@@ -1,7 +1,10 @@
 package daif.aymane.showsManagement.models;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class UpComingEpisode {
@@ -11,6 +14,9 @@ public class UpComingEpisode {
 
     @OneToOne
     private Episode episode;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate releaseDate;
 
     public UpComingEpisode(){}
 
