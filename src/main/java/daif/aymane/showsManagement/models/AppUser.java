@@ -3,6 +3,7 @@ package daif.aymane.showsManagement.models;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class AppUser {
@@ -17,21 +18,26 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole> userRoles = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Show> shows = new ArrayList<>();
+
     public AppUser(){}
 
-    public AppUser(Long id, String username, String email, String encryptedPassword, Collection<UserRole> userRoles) {
+    public AppUser(Long id, String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<Show> shows) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.userRoles = userRoles;
+        this.shows = shows;
     }
 
-    public AppUser(String username, String email, String encryptedPassword, Collection<UserRole> userRoles) {
+    public AppUser(String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<Show> shows) {
         this.username = username;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.userRoles = userRoles;
+        this.shows = shows;
     }
 
     public Long getId() {
@@ -72,5 +78,13 @@ public class AppUser {
 
     public void setUserRoles(Collection<UserRole> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public List<Show> getShows() {
+        return shows;
+    }
+
+    public void setShows(List<Show> shows) {
+        this.shows = shows;
     }
 }
