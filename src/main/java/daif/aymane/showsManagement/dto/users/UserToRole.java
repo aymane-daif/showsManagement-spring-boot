@@ -1,4 +1,4 @@
-package daif.aymane.showsManagement.dto;
+package daif.aymane.showsManagement.dto.users;
 
 public class UserToRole {
     private String username;

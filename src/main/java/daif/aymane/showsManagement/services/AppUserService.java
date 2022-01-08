@@ -4,9 +4,9 @@ import daif.aymane.showsManagement.models.AppUser;
 import daif.aymane.showsManagement.models.UserRole;
 import daif.aymane.showsManagement.repositories.AppUserRepository;
 import daif.aymane.showsManagement.repositories.UserRoleRepository;
-import daif.aymane.showsManagement.dto.ResponseObject;
-import daif.aymane.showsManagement.dto.UserRequest;
-import daif.aymane.showsManagement.dto.UserResponse;
+import daif.aymane.showsManagement.dto.users.ResponseObject;
+import daif.aymane.showsManagement.dto.users.UserRequest;
+import daif.aymane.showsManagement.dto.users.UserResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -60,15 +60,15 @@ public class AppUserService implements UserDetailsService {
         appUser.getUserRoles().add(userRoleRepository.findByRoleName("USER"));
         AppUser createdAppUser = appUserRepository.save(appUser);
 
-        if(appUserRepository.existsById(appUser.getId())){
+        if(appUserRepository.existsById(appUser.getUserId())){
             UserResponse userResponse = new UserResponse();
             BeanUtils.copyProperties(createdAppUser, userResponse,"encryptedPassword");
-            msg = "user with id " + createdAppUser.getId() + " is created successfully";
+            msg = "user with id " + createdAppUser.getUserId() + " is created successfully";
             responseObject = createResponseObject(msg, true);
             responseObject.getData().add(userResponse);
 
         }else {
-            msg =  "user with id " + createdAppUser.getId() + " is NOT created";
+            msg =  "user with id " + createdAppUser.getUserId() + " is NOT created";
             responseObject = createResponseObject(msg, false);
         }
         return responseObject;
@@ -90,6 +90,23 @@ public class AppUserService implements UserDetailsService {
         return responseObject;
     }
 
+    public ResponseObject getUser(Long userId){
+        ResponseObject responseObject;
+        String msg;
+        if(appUserRepository.existsById(userId)){
+            AppUser fetchedUser = appUserRepository.findById(userId).get();
+            UserResponse userResponse = new UserResponse();
+            BeanUtils.copyProperties(fetchedUser, userResponse,"encryptedPassword");
+            msg = "user with id " + userId + " is fetched successfully";
+            responseObject = createResponseObject(msg, true);
+            responseObject.getData().add(userResponse);
+        }else {
+            msg = "user with id " + userId + " does not exist";
+            responseObject = createResponseObject(msg, false);
+        }
+        return responseObject;
+    }
+
     public ResponseObject loginUser(UserRequest userRequest){
         ResponseObject responseObject;
         String msg;
@@ -101,7 +118,7 @@ public class AppUserService implements UserDetailsService {
             if(bCryptPasswordEncoder.matches(passwordFromRequest,encryptesPassword)){
                 UserResponse userResponse =  new UserResponse();
                 BeanUtils.copyProperties(appUserFromDb, userResponse,"encryptedPassword");
-                msg = "user with id " + userResponse.getId() + ", is logged successfully";
+                msg = "user with id " + userResponse.getUserId() + ", is logged successfully";
                 responseObject = createResponseObject(msg, true);
                 responseObject.getData().add(userResponse);
                 return responseObject;

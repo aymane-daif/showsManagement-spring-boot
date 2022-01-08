@@ -9,25 +9,25 @@ import javax.persistence.Id;
 public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long episodeId;
 
     private String episodeNumber;
     private String seasonNumber;
 
     public Episode(){}
 
-    public Episode(Long id, String episodeNumber, String seasonNumber) {
-        this.id = id;
+    public Episode(Long episodeId, String episodeNumber, String seasonNumber) {
+        this.episodeId = episodeId;
         this.episodeNumber = episodeNumber;
         this.seasonNumber = seasonNumber;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEpisodeId() {
+        return episodeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEpisodeId(Long episodeId) {
+        this.episodeId = episodeId;
     }
 
     public String getEpisodeNumber() {

@@ -1,6 +1,6 @@
 package daif.aymane.showsManagement.controllers;
 
-import daif.aymane.showsManagement.dto.UserToRole;
+import daif.aymane.showsManagement.dto.users.UserToRole;
 import daif.aymane.showsManagement.models.UserRole;
 import daif.aymane.showsManagement.services.AppUserService;
 import org.springframework.web.bind.annotation.PostMapping;

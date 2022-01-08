@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class UpComingEpisode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long upComingEpisodeId;
 
     @OneToOne
     private Episode episode;
@@ -20,17 +20,17 @@ public class UpComingEpisode {
 
     public UpComingEpisode(){}
 
-    public UpComingEpisode(Long id, Episode episode) {
-        this.id = id;
+    public UpComingEpisode(Long upComingEpisodeId, Episode episode) {
+        this.upComingEpisodeId = upComingEpisodeId;
         this.episode = episode;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUpComingEpisodeId() {
+        return upComingEpisodeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUpComingEpisodeId(Long upComingEpisodeId) {
+        this.upComingEpisodeId = upComingEpisodeId;
     }
 
     public Episode getEpisode() {
@@ -39,5 +39,13 @@ public class UpComingEpisode {
 
     public void setEpisode(Episode episode) {
         this.episode = episode;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

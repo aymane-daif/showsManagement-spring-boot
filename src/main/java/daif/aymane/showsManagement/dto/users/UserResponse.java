@@ -1,41 +1,26 @@
-package daif.aymane.showsManagement.models;
+package daif.aymane.showsManagement.dto.users;
 
-import javax.persistence.*;
+import daif.aymane.showsManagement.models.TVShow;
+import daif.aymane.showsManagement.models.UserRole;
+
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-public class AppUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserResponse {
     private Long userId;
-    @Column(unique = true)
     private String username;
     private String email;
-    private String encryptedPassword;
-    // every time when we load user we want to load roles
-    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole> userRoles = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "user")
     private List<TVShow> TVShows = new ArrayList<>();
 
-    public AppUser(){}
+    public UserResponse(){}
 
-    public AppUser(Long userId, String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<TVShow> TVShows) {
+    public UserResponse(Long userId, String username, String email, Collection<UserRole> userRoles, List<TVShow> TVShows) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.encryptedPassword = encryptedPassword;
-        this.userRoles = userRoles;
-        this.TVShows = TVShows;
-    }
-
-    public AppUser(String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<TVShow> TVShows) {
-        this.username = username;
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
         this.userRoles = userRoles;
         this.TVShows = TVShows;
     }
@@ -62,14 +47,6 @@ public class AppUser {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
     }
 
     public Collection<UserRole> getUserRoles() {

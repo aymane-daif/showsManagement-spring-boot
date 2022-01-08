@@ -1,4 +1,4 @@
-package daif.aymane.showsManagement.dto;
+package daif.aymane.showsManagement.dto.users;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userRoleId;
     private String roleName;
 
     public UserRole() {
@@ -19,12 +19,12 @@ public class UserRole {
         this.roleName = roleName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserRoleId() {
+        return userRoleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserRoleId(Long userRoleId) {
+        this.userRoleId = userRoleId;
     }
 
     public String getRoleName() {
