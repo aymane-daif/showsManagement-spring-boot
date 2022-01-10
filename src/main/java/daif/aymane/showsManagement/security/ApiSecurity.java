@@ -29,7 +29,7 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/login","/api/v1/users/register").permitAll()
+                .antMatchers("/api/v1/login","/api/v1/register").permitAll()
                 .anyRequest().authenticated()
         // add auth filter
                 .and()

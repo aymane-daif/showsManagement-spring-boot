@@ -54,22 +54,26 @@ public class AppUserService implements UserDetailsService {
         ResponseObject responseObject;
         AppUser appUser = new AppUser();
         String msg;
-
-        BeanUtils.copyProperties(userRequest, appUser, "password");
-        appUser.setEncryptedPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-        appUser.getUserRoles().add(userRoleRepository.findByRoleName("USER"));
-        AppUser createdAppUser = appUserRepository.save(appUser);
-
-        if(appUserRepository.existsById(appUser.getUserId())){
-            UserResponse userResponse = new UserResponse();
-            BeanUtils.copyProperties(createdAppUser, userResponse,"encryptedPassword");
-            msg = "user with id " + createdAppUser.getUserId() + " is created successfully";
-            responseObject = createResponseObject(msg, true);
-            responseObject.getData().add(userResponse);
-
-        }else {
-            msg =  "user with id " + createdAppUser.getUserId() + " is NOT created";
+        if(appUserRepository.findByUsername(userRequest.getUsername()) != null){
+            msg =  "user already exists";
             responseObject = createResponseObject(msg, false);
+        }else {
+            BeanUtils.copyProperties(userRequest, appUser, "password");
+            appUser.setEncryptedPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+            appUser.getUserRoles().add(userRoleRepository.findByRoleName("USER"));
+            AppUser createdAppUser = appUserRepository.save(appUser);
+
+            if(appUserRepository.existsById(appUser.getUserId())){
+                UserResponse userResponse = new UserResponse();
+                BeanUtils.copyProperties(createdAppUser, userResponse,"encryptedPassword");
+                msg = "user with id " + createdAppUser.getUserId() + " is created successfully";
+                responseObject = createResponseObject(msg, true);
+                responseObject.getData().add(userResponse);
+
+            }else {
+                msg =  "user with id " + createdAppUser.getUserId() + " is NOT created";
+                responseObject = createResponseObject(msg, false);
+            }
         }
         return responseObject;
     }

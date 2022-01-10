@@ -5,6 +5,7 @@ import daif.aymane.showsManagement.dto.users.ResponseObject;
 import daif.aymane.showsManagement.dto.users.UserRequest;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @RequestMapping(path = "api/v1/users")
 @RestController
 public class AppUserController {
@@ -18,16 +19,6 @@ public class AppUserController {
     @GetMapping
     public ResponseObject getUsers(){
         return appUserService.allUsers();
-    }
-
-    @PostMapping("/register")
-    public ResponseObject createUser(@RequestBody UserRequest userRequest){
-        return appUserService.addUser(userRequest);
-    }
-
-    @PostMapping("/login")
-    public ResponseObject logUserIn(@RequestBody UserRequest userRequest){
-        return appUserService.loginUser(userRequest);
     }
 
     @GetMapping("/{userId}")
