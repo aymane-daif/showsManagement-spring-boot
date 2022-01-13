@@ -2,6 +2,7 @@ package daif.aymane.showsManagement.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,13 +13,20 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
     @Column(unique = true)
     @Size(min = 2, message = "username must have at least 2 characters")
+    @NotNull(message = "username cannot be null")
     private String username;
+
     @Email
+    @NotNull(message = "email cannot be null")
     private String email;
+
+    @NotNull(message = "password cannot be null")
     @Size(min = 6, message = "password must have at least 6 characters")
     private String password;
+
     // every time when we load user we want to load roles
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole> userRoles = new ArrayList<>();
