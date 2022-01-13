@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import daif.aymane.showsManagement.dto.users.UserRequest;
+import daif.aymane.showsManagement.models.AppUser;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,9 +34,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{
             // having json content via request.getInputStream(), then map it into User object
-            UserRequest userRequest = new ObjectMapper().readValue(request.getInputStream(), UserRequest.class);
+            AppUser appUser = new ObjectMapper().readValue(request.getInputStream(), AppUser.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userRequest.getUsername(), userRequest.getPassword(), new ArrayList<>()
+                    appUser.getUsername(), appUser.getPassword(), new ArrayList<>()
             );
             return authenticationManager.authenticate(authenticationToken);
         }catch (Exception e){

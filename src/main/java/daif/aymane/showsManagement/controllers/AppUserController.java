@@ -2,7 +2,6 @@ package daif.aymane.showsManagement.controllers;
 
 import daif.aymane.showsManagement.services.AppUserService;
 import daif.aymane.showsManagement.dto.users.ResponseObject;
-import daif.aymane.showsManagement.dto.users.UserRequest;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")

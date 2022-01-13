@@ -1,6 +1,8 @@
 package daif.aymane.showsManagement.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,9 +13,12 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @Column(unique = true)
+    @Size(min = 2, message = "username must have at least 2 characters")
     private String username;
+    @Email
     private String email;
-    private String encryptedPassword;
+    @Size(min = 6, message = "password must have at least 6 characters")
+    private String password;
     // every time when we load user we want to load roles
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole> userRoles = new ArrayList<>();
@@ -23,19 +28,19 @@ public class AppUser {
 
     public AppUser(){}
 
-    public AppUser(Long userId, String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<TVShow> TVShows) {
+    public AppUser(Long userId, String username, String email, String password, Collection<UserRole> userRoles, List<TVShow> TVShows) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.encryptedPassword = encryptedPassword;
+        this.password = password;
         this.userRoles = userRoles;
         this.TVShows = TVShows;
     }
 
-    public AppUser(String username, String email, String encryptedPassword, Collection<UserRole> userRoles, List<TVShow> TVShows) {
+    public AppUser(String username, String email, String password, Collection<UserRole> userRoles, List<TVShow> TVShows) {
         this.username = username;
         this.email = email;
-        this.encryptedPassword = encryptedPassword;
+        this.password = password;
         this.userRoles = userRoles;
         this.TVShows = TVShows;
     }
@@ -64,12 +69,12 @@ public class AppUser {
         this.email = email;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Collection<UserRole> getUserRoles() {

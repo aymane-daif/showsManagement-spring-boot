@@ -1,9 +1,11 @@
 package daif.aymane.showsManagement.controllers;
 
 import daif.aymane.showsManagement.dto.users.ResponseObject;
-import daif.aymane.showsManagement.dto.users.UserRequest;
+import daif.aymane.showsManagement.models.AppUser;
 import daif.aymane.showsManagement.services.AppUserService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin("*")
 @RequestMapping(path = "api/v1")
@@ -16,12 +18,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseObject createUser(@RequestBody UserRequest userRequest){
-        return appUserService.addUser(userRequest);
+    public ResponseObject createUser(@Valid @RequestBody AppUser appUser){
+        return appUserService.addUser(appUser);
     }
 
     @PostMapping("/login")
-    public ResponseObject logUserIn(@RequestBody UserRequest userRequest){
-        return appUserService.loginUser(userRequest);
+    public ResponseObject logUserIn(@Valid @RequestBody AppUser appUser){
+        return appUserService.loginUser(appUser);
     }
 }
