@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(path = "api/v1/users/{userId}/episodes/upcoming")
+@RequestMapping(path = "api/v1/users/{username}/episodes/upcoming")
 @RestController
 public class UpComingEpisodeController {
     private final UpComingEpisodeService upComingEpisodeService;

@@ -7,7 +7,10 @@ import daif.aymane.showsManagement.repositories.UserRoleRepository;
 import daif.aymane.showsManagement.dto.users.ResponseObject;
 import daif.aymane.showsManagement.dto.users.UserResponse;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,6 +66,7 @@ public class AppUserService implements UserDetailsService {
             if(appUserRepository.existsById(appUser.getUserId())){
                 UserResponse userResponse = new UserResponse();
                 BeanUtils.copyProperties(createdAppUser, userResponse,"password");
+                userResponse.setTotalTvShows(createdAppUser.getTVShows().size());
                 msg = "user with id " + createdAppUser.getUserId() + " is created successfully";
                 responseObject = createResponseObject(msg, true);
                 responseObject.getData().add(userResponse);
@@ -75,37 +79,44 @@ public class AppUserService implements UserDetailsService {
         return responseObject;
     }
 
-    public ResponseObject removeUser(Long userId){
+    public ResponseObject removeUser(String username){
         ResponseObject responseObject;
         String msg;
-        if(appUserRepository.existsById(userId)){
-            appUserRepository.deleteById(userId);
+        if(appUserRepository.existsByUsername(username)){
+            appUserRepository.deleteByUsername(username);
             List<UserResponse> usersResponse = copyPropertiesFromDbToResponse();
-            msg = "user with id " + userId + " is deleted successfully";
+            msg = "user is deleted successfully";
             responseObject = createResponseObject(msg, true);
             responseObject.setData(usersResponse);
         }else {
-            msg = "user with id " + userId + " does not exist";
+            msg = "user does not exist";
             responseObject = createResponseObject(msg, false);
         }
         return responseObject;
     }
 
-    public ResponseObject getUser(Long userId){
-        ResponseObject responseObject;
-        String msg;
-        if(appUserRepository.existsById(userId)){
-            AppUser fetchedUser = appUserRepository.findById(userId).get();
-            UserResponse userResponse = new UserResponse();
-            BeanUtils.copyProperties(fetchedUser, userResponse,"encryptedPassword");
-            msg = "user with id " + userId + " is fetched successfully";
-            responseObject = createResponseObject(msg, true);
-            responseObject.getData().add(userResponse);
-        }else {
-            msg = "user with id " + userId + " does not exist";
-            responseObject = createResponseObject(msg, false);
+    public ResponseObject getUser(String username){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            if (username.equals(currentUserName)){
+                ResponseObject responseObject;
+                String msg;
+                if(appUserRepository.existsByUsername(username)){
+                    AppUser fetchedUser = appUserRepository.findByUsername(username);
+                    UserResponse userResponse = new UserResponse();
+                    BeanUtils.copyProperties(fetchedUser, userResponse,"encryptedPassword");
+                    msg = "user is fetched successfully";
+                    responseObject = createResponseObject(msg, true);
+                    responseObject.getData().add(userResponse);
+                }else {
+                    msg = "user does not exist";
+                    responseObject = createResponseObject(msg, false);
+                }
+                return responseObject;
+            }
         }
-        return responseObject;
+        throw new IllegalStateException("unauthorized");
     }
 
     public ResponseObject loginUser(AppUser appUser){
@@ -119,7 +130,7 @@ public class AppUserService implements UserDetailsService {
             if(bCryptPasswordEncoder.matches(passwordFromRequest,encryptedPassword)){
                 UserResponse userResponse =  new UserResponse();
                 BeanUtils.copyProperties(appUserFromDb, userResponse,"password");
-                msg = "user with id " + userResponse.getUserId() + ", is logged successfully";
+                msg = "user is logged successfully";
                 responseObject = createResponseObject(msg, true);
                 responseObject.getData().add(userResponse);
                 return responseObject;

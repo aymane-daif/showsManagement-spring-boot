@@ -20,14 +20,14 @@ public class AppUserController {
         return appUserService.allUsers();
     }
 
-    @GetMapping("/{userId}")
-    public ResponseObject getUser(@PathVariable Long userId){
-        return appUserService.getUser(userId);
+    @GetMapping("/{username}")
+    public ResponseObject getUser(@PathVariable String username){
+        return appUserService.getUser(username);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseObject deleteUsers(@PathVariable Long userId){
-        return appUserService.removeUser(userId);
+    @DeleteMapping("/{username}")
+    public ResponseObject deleteUsers(@PathVariable String username){
+        return appUserService.removeUser(username);
     }
 
 }

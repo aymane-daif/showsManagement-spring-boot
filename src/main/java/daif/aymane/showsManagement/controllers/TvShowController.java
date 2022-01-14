@@ -6,8 +6,8 @@ import daif.aymane.showsManagement.services.TvShowService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@RequestMapping(path = "api/v1/users/{userId}/shows")
+@CrossOrigin("*")
+@RequestMapping(path = "api/v1/users/{username}/shows")
 @RestController
 public class TvShowController {
     private final TvShowService tvShowService;
@@ -17,12 +17,12 @@ public class TvShowController {
     }
 
     @GetMapping
-    public List<TVShow> getUserShows(@PathVariable Long userId){
-        return tvShowService.allShows(userId);
+    public List<TVShow> getUserShows(@PathVariable String username){
+        return tvShowService.allShows(username);
     }
 
     @PostMapping
-    public TVShow createUserShow(@PathVariable Long userId, @RequestBody TVShowDto tvShowDto){
-        return tvShowService.addShow(userId, tvShowDto);
+    public TVShow createUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto){
+        return tvShowService.addShow(username, tvShowDto);
     }
 }

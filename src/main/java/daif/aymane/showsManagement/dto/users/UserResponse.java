@@ -13,16 +13,16 @@ public class UserResponse {
     private String username;
     private String email;
     private Collection<UserRole> userRoles = new ArrayList<>();
-    private List<TVShow> TVShows = new ArrayList<>();
+    private int totalTvShows = 0;
 
     public UserResponse(){}
 
-    public UserResponse(Long userId, String username, String email, Collection<UserRole> userRoles, List<TVShow> TVShows) {
+    public UserResponse(Long userId, String username, String email, Collection<UserRole> userRoles, int totalTvShows) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.userRoles = userRoles;
-        this.TVShows = TVShows;
+        this.totalTvShows = totalTvShows;
     }
 
     public Long getUserId() {
@@ -57,11 +57,11 @@ public class UserResponse {
         this.userRoles = userRoles;
     }
 
-    public List<TVShow> getTVShows() {
-        return TVShows;
+    public int getTotalTvShows() {
+        return totalTvShows;
     }
 
-    public void setTVShows(List<TVShow> TVShows) {
-        this.TVShows = TVShows;
+    public void setTotalTvShows(int totalTvShows) {
+        this.totalTvShows = totalTvShows;
     }
 }

@@ -1,5 +1,7 @@
 package daif.aymane.showsManagement.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole> userRoles = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "user")
     private List<TVShow> TVShows = new ArrayList<>();
 

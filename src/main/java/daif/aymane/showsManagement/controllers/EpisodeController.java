@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(path = "api/v1/users/{userId}/episodes")
+@RequestMapping(path = "api/v1/users/{username}/episodes")
 @RestController
 public class EpisodeController {
     private final EpisodeService episodeService;
