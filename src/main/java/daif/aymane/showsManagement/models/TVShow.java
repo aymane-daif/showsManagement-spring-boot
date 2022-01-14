@@ -23,19 +23,23 @@ public class TVShow {
     @OneToOne
     private UpComingEpisode upComingEpisode;
 
+    @OneToOne
+    private ImageFile postImage;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser user;
 
     public TVShow(){}
 
-    public TVShow(Long showId, String name, boolean isCompleted, ShowState showState, Episode lastSeenEpisode, UpComingEpisode upComingEpisode, AppUser user) {
+    public TVShow(Long showId, String name, boolean isCompleted, ShowState showState, Episode lastSeenEpisode, UpComingEpisode upComingEpisode, ImageFile postImage, AppUser user) {
         this.showId = showId;
         this.name = name;
         this.isCompleted = isCompleted;
         this.showState = showState;
         this.lastSeenEpisode = lastSeenEpisode;
         this.upComingEpisode = upComingEpisode;
+        this.postImage = postImage;
         this.user = user;
     }
 
@@ -93,5 +97,13 @@ public class TVShow {
 
     public void setUpComingEpisode(UpComingEpisode upComingEpisode) {
         this.upComingEpisode = upComingEpisode;
+    }
+
+    public ImageFile getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(ImageFile postImage) {
+        this.postImage = postImage;
     }
 }

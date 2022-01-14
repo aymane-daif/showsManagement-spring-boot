@@ -17,9 +17,11 @@ public class TVShowDto {
 
     private Long userId;
 
+    private String imageFileId;
+
     public TVShowDto(){}
 
-    public TVShowDto(Long showId, String name, boolean isCompleted, ShowState showState, Long lastSeenEpisodeId, Long upComingEpisodeId, Long userId) {
+    public TVShowDto(Long showId, String name, boolean isCompleted, ShowState showState, Long lastSeenEpisodeId, Long upComingEpisodeId, Long userId, String imageFileId) {
         this.showId = showId;
         this.name = name;
         this.isCompleted = isCompleted;
@@ -27,6 +29,7 @@ public class TVShowDto {
         this.lastSeenEpisodeId = lastSeenEpisodeId;
         this.upComingEpisodeId = upComingEpisodeId;
         this.userId = userId;
+        this.imageFileId = imageFileId;
     }
 
     public Long getShowId() {
@@ -83,5 +86,13 @@ public class TVShowDto {
 
     public void setUpComingEpisodeId(Long upComingEpisodeId) {
         this.upComingEpisodeId = upComingEpisodeId;
+    }
+
+    public String getImageFileId() {
+        return imageFileId;
+    }
+
+    public void setImageFileId(String imageFileId) {
+        this.imageFileId = imageFileId;
     }
 }

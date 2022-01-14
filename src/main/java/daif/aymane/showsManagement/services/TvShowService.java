@@ -2,10 +2,7 @@ package daif.aymane.showsManagement.services;
 
 import daif.aymane.showsManagement.dto.TVShows.TVShowDto;
 import daif.aymane.showsManagement.models.*;
-import daif.aymane.showsManagement.repositories.AppUserRepository;
-import daif.aymane.showsManagement.repositories.EpisodeRepository;
-import daif.aymane.showsManagement.repositories.TvShowRepository;
-import daif.aymane.showsManagement.repositories.UpComingEpisodeRepository;
+import daif.aymane.showsManagement.repositories.*;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,12 +18,14 @@ public class TvShowService {
     private final AppUserRepository appUserRepository;
     private final EpisodeRepository episodeRepository;
     private final UpComingEpisodeRepository upComingEpisodeRepository;
+    private final ImageFileRepository imageFileRepository;
 
-    public TvShowService(TvShowRepository tvShowRepository, AppUserRepository appUserRepository, EpisodeRepository episodeRepository, UpComingEpisodeRepository upComingEpisodeRepository) {
+    public TvShowService(TvShowRepository tvShowRepository, AppUserRepository appUserRepository, EpisodeRepository episodeRepository, UpComingEpisodeRepository upComingEpisodeRepository, ImageFileRepository imageFileRepository) {
         this.tvShowRepository = tvShowRepository;
         this.appUserRepository = appUserRepository;
         this.episodeRepository = episodeRepository;
         this.upComingEpisodeRepository = upComingEpisodeRepository;
+        this.imageFileRepository = imageFileRepository;
     }
 
     public List<TVShow> allShows(String username){
@@ -65,6 +64,9 @@ public class TvShowService {
 
                 AppUser appUser = appUserRepository.findByUsername(currentUserName);
                 createdTVShow.setUser(appUser);
+
+                ImageFile imageFile = imageFileRepository.findById(tvShowDto.getImageFileId()).get();
+                createdTVShow.setPostImage(imageFile);
 
                 return tvShowRepository.save(createdTVShow);
             }
