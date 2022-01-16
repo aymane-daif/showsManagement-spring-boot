@@ -19,6 +19,10 @@ public class EpisodeService {
     }
 
     public Episode createEpisode(Episode episode){
+        if(episodeRepository.existsByEpisodeNumberAndSeasonNumber(episode.getEpisodeNumber(),episode.getSeasonNumber())
+        ){
+            return episodeRepository.findByEpisodeNumberAndSeasonNumber(episode.getEpisodeNumber(), episode.getSeasonNumber());
+        }
         return episodeRepository.save(episode);
     }
 }

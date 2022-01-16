@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
-@RequestMapping(path = "api/v1/users/{username}/shows/{showId}/images")
+@RequestMapping(path = "api/v1/users/{username}/shows/images")
 @RestController
 public class ImageFileController {
     private final ImageFileService imageFileService;
@@ -20,15 +20,16 @@ public class ImageFileController {
     }
 
     @PostMapping
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    public ImageFile uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            imageFileService.save(file);
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(String.format("File uploaded successfully"));
+            ImageFile imageFile = imageFileService.save(file);
+		//ResponseEntity.status(HttpStatus.OK)
+                  //  .body(String.format(imageFile.getId()))
+            return imageFile;
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("Could not upload the file"));
+           // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+             //       .body(String.format("Could not upload the file"));
+		return null;
         }
     }
 

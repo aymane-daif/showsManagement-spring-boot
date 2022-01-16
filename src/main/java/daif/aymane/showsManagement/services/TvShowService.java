@@ -1,6 +1,7 @@
 package daif.aymane.showsManagement.services;
 
 import daif.aymane.showsManagement.dto.TVShows.TVShowDto;
+import daif.aymane.showsManagement.dto.UpComingEpisodes.UpComingEpisodeDto;
 import daif.aymane.showsManagement.models.*;
 import daif.aymane.showsManagement.repositories.*;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -8,7 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Transactional
@@ -16,15 +19,15 @@ import java.util.List;
 public class TvShowService {
     private final TvShowRepository tvShowRepository;
     private final AppUserRepository appUserRepository;
-    private final EpisodeRepository episodeRepository;
-    private final UpComingEpisodeRepository upComingEpisodeRepository;
+    private final EpisodeService episodeService;
+    private final UpComingEpisodeService upComingEpisodeService;
     private final ImageFileRepository imageFileRepository;
 
-    public TvShowService(TvShowRepository tvShowRepository, AppUserRepository appUserRepository, EpisodeRepository episodeRepository, UpComingEpisodeRepository upComingEpisodeRepository, ImageFileRepository imageFileRepository) {
+    public TvShowService(TvShowRepository tvShowRepository, AppUserRepository appUserRepository, EpisodeService episodeService, UpComingEpisodeService upComingEpisodeService, ImageFileRepository imageFileRepository) {
         this.tvShowRepository = tvShowRepository;
         this.appUserRepository = appUserRepository;
-        this.episodeRepository = episodeRepository;
-        this.upComingEpisodeRepository = upComingEpisodeRepository;
+        this.episodeService = episodeService;
+        this.upComingEpisodeService = upComingEpisodeService;
         this.imageFileRepository = imageFileRepository;
     }
 
@@ -45,7 +48,7 @@ public class TvShowService {
         throw new IllegalStateException("unauthorized");
     }
 
-    public TVShow addShow(String username, TVShowDto tvShowDto){
+    public TVShow addShow(String username, TVShowDto tvShowDto) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
@@ -56,17 +59,25 @@ public class TvShowService {
                 createdTVShow.setName(tvShowDto.getName());
 
                 if(tvShowDto.getShowState().equals(ShowState.ONGOING)){
-                    UpComingEpisode upComingEpisode = upComingEpisodeRepository.findById(tvShowDto.getUpComingEpisodeId()).get();
-                    createdTVShow.setUpComingEpisode(upComingEpisode);
+                    UpComingEpisodeDto upComingEpisodeDto = new UpComingEpisodeDto();
+                    upComingEpisodeDto.setUpComingEpisode(tvShowDto.getUpComingEpisode());
+                    upComingEpisodeDto.setUpComingSeason(tvShowDto.getUpComingSeason());
+
+                    createdTVShow.setUpComingEpisode(upComingEpisodeService.createUpComingEpisode(
+                            upComingEpisodeDto
+                    ));
                 }
-                Episode lastSeenEpisode =  episodeRepository.findById(tvShowDto.getLastSeenEpisodeId()).get();
-                createdTVShow.setLastSeenEpisode(lastSeenEpisode);
+
+                createdTVShow.setLastSeenEpisode(episodeService.createEpisode(
+                        new Episode(null,tvShowDto.getLastSeenEpisode(),tvShowDto.getLastSeenSeason())
+                ));
 
                 AppUser appUser = appUserRepository.findByUsername(currentUserName);
                 createdTVShow.setUser(appUser);
 
-                ImageFile imageFile = imageFileRepository.findById(tvShowDto.getImageFileId()).get();
-                createdTVShow.setPostImage(imageFile);
+                createdTVShow.setPostImage(
+                        imageFileRepository.findById(tvShowDto.getPosterId()).get()
+                );
 
                 return tvShowRepository.save(createdTVShow);
             }

@@ -5,6 +5,7 @@ import daif.aymane.showsManagement.models.TVShow;
 import daif.aymane.showsManagement.services.TvShowService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 @CrossOrigin("*")
 @RequestMapping(path = "api/v1/users/{username}/shows")
@@ -22,7 +23,7 @@ public class TvShowController {
     }
 
     @PostMapping
-    public TVShow createUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto){
+    public TVShow createUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto) throws IOException {
         return tvShowService.addShow(username, tvShowDto);
     }
 }

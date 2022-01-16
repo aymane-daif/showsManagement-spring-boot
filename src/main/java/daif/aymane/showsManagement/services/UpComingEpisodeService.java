@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class UpComingEpisodeService {
     private final UpComingEpisodeRepository upComingEpisodeRepository;
-    private final EpisodeRepository episodeRepository;
+    private final EpisodeService episodeService;
 
-    public UpComingEpisodeService(UpComingEpisodeRepository upComingEpisodeRepository, EpisodeRepository episodeRepository) {
+    public UpComingEpisodeService(UpComingEpisodeRepository upComingEpisodeRepository, EpisodeService episodeService) {
         this.upComingEpisodeRepository = upComingEpisodeRepository;
-        this.episodeRepository = episodeRepository;
+        this.episodeService = episodeService;
     }
 
     public List<UpComingEpisode> allUpComingEpisodes(){
@@ -26,9 +26,8 @@ public class UpComingEpisodeService {
     public UpComingEpisode createUpComingEpisode(UpComingEpisodeDto upComingEpisodeDto){
         UpComingEpisode upComingEpisode = new UpComingEpisode();
         upComingEpisode.setReleaseDate(upComingEpisodeDto.getReleaseDate());
+        upComingEpisode.setEpisode(episodeService.createEpisode(new Episode(null,upComingEpisodeDto.getUpComingEpisode(),upComingEpisodeDto.getUpComingSeason())));
 
-        Episode episode = episodeRepository.findById(upComingEpisodeDto.getEpisodeId()).get();
-        upComingEpisode.setEpisode(episode);
         return upComingEpisodeRepository.save(upComingEpisode);
     }
 }

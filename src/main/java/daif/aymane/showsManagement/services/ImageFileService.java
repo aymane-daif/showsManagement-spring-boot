@@ -18,14 +18,14 @@ public class ImageFileService {
         this.imageFileRepository = imageFileRepository;
     }
 
-    public void save(MultipartFile file) throws IOException {
+    public ImageFile save(MultipartFile file) throws IOException {
         ImageFile imageFile = new ImageFile();
         imageFile.setName(StringUtils.cleanPath(file.getOriginalFilename()));
         imageFile.setContentType(file.getContentType());
         imageFile.setData(file.getBytes());
         imageFile.setSize(file.getSize());
 
-        imageFileRepository.save(imageFile);
+        return imageFileRepository.save(imageFile);
     }
 
     public Optional<ImageFile> getFile(String id) {

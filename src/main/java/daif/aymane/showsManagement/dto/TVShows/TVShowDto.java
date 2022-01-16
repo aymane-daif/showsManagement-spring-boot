@@ -2,34 +2,38 @@ package daif.aymane.showsManagement.dto.TVShows;
 
 
 import daif.aymane.showsManagement.models.ShowState;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class TVShowDto {
 
     private Long showId;
     private String name;
-    private boolean isCompleted;
+    private boolean completed;
     private ShowState showState;
 
-    private Long lastSeenEpisodeId;
 
-    private Long upComingEpisodeId;
+    private String lastSeenEpisode;
+    private String lastSeenSeason;
 
-    private Long userId;
+    private String upComingEpisode;
+    private String upComingSeason;
 
-    private String imageFileId;
+
+    private String posterId;
 
     public TVShowDto(){}
 
-    public TVShowDto(Long showId, String name, boolean isCompleted, ShowState showState, Long lastSeenEpisodeId, Long upComingEpisodeId, Long userId, String imageFileId) {
+    public TVShowDto(Long showId, String name, boolean completed, ShowState showState, String lastSeenEpisode, String lastSeenSeason, String upComingEpisode, String upComingSeason, String posterId) {
         this.showId = showId;
         this.name = name;
-        this.isCompleted = isCompleted;
+        this.completed = completed;
         this.showState = showState;
-        this.lastSeenEpisodeId = lastSeenEpisodeId;
-        this.upComingEpisodeId = upComingEpisodeId;
-        this.userId = userId;
-        this.imageFileId = imageFileId;
+        this.lastSeenEpisode = lastSeenEpisode;
+        this.lastSeenSeason = lastSeenSeason;
+        this.upComingEpisode = upComingEpisode;
+        this.upComingSeason = upComingSeason;
+        this.posterId = posterId;
     }
 
     public Long getShowId() {
@@ -49,11 +53,11 @@ public class TVShowDto {
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public void setCompleted(boolean completed) {
-        isCompleted = completed;
+        this.completed = completed;
     }
 
     public ShowState getShowState() {
@@ -64,35 +68,43 @@ public class TVShowDto {
         this.showState = showState;
     }
 
-    public Long getLastSeenEpisodeId() {
-        return lastSeenEpisodeId;
+    public String getLastSeenEpisode() {
+        return lastSeenEpisode;
     }
 
-    public void setLastSeenEpisodeId(Long lastSeenEpisodeId) {
-        this.lastSeenEpisodeId = lastSeenEpisodeId;
+    public void setLastSeenEpisode(String lastSeenEpisode) {
+        this.lastSeenEpisode = lastSeenEpisode;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getLastSeenSeason() {
+        return lastSeenSeason;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setLastSeenSeason(String lastSeenSeason) {
+        this.lastSeenSeason = lastSeenSeason;
     }
 
-    public Long getUpComingEpisodeId() {
-        return upComingEpisodeId;
+    public String getUpComingEpisode() {
+        return upComingEpisode;
     }
 
-    public void setUpComingEpisodeId(Long upComingEpisodeId) {
-        this.upComingEpisodeId = upComingEpisodeId;
+    public void setUpComingEpisode(String upComingEpisode) {
+        this.upComingEpisode = upComingEpisode;
     }
 
-    public String getImageFileId() {
-        return imageFileId;
+    public String getUpComingSeason() {
+        return upComingSeason;
     }
 
-    public void setImageFileId(String imageFileId) {
-        this.imageFileId = imageFileId;
+    public void setUpComingSeason(String upComingSeason) {
+        this.upComingSeason = upComingSeason;
+    }
+
+    public String getPosterId() {
+        return posterId;
+    }
+
+    public void setPosterId(String posterId) {
+        this.posterId = posterId;
     }
 }
