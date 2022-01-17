@@ -79,6 +79,8 @@ public class TvShowService {
                         imageFileRepository.findById(tvShowDto.getPosterId()).get()
                 );
 
+		createdTVShow.setShowEmoji(tvShowDto.getShowEmoji());
+
                 return tvShowRepository.save(createdTVShow);
             }
 

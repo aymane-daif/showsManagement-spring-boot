@@ -14,6 +14,8 @@ public class TVShow {
 
     private boolean isCompleted;
 
+    private String showEmoji;
+
     @Enumerated(value = EnumType.STRING)
     private ShowState showState;
 
@@ -32,11 +34,12 @@ public class TVShow {
 
     public TVShow(){}
 
-    public TVShow(Long showId, String name, boolean isCompleted, ShowState showState, Episode lastSeenEpisode, UpComingEpisode upComingEpisode, ImageFile postImage, AppUser user) {
+    public TVShow(Long showId, String name, boolean isCompleted, ShowState showState, String showEmoji, Episode lastSeenEpisode, UpComingEpisode upComingEpisode, ImageFile postImage, AppUser user) {
         this.showId = showId;
         this.name = name;
         this.isCompleted = isCompleted;
         this.showState = showState;
+	this.showEmoji = showEmoji;
         this.lastSeenEpisode = lastSeenEpisode;
         this.upComingEpisode = upComingEpisode;
         this.postImage = postImage;
@@ -105,5 +108,13 @@ public class TVShow {
 
     public void setPostImage(ImageFile postImage) {
         this.postImage = postImage;
+    }
+
+    public String getShowEmoji() {
+	return showEmoji;
+    }
+
+    public void setShowEmoji(String showEmoji) {
+   	this.showEmoji = showEmoji;
     }
 }
