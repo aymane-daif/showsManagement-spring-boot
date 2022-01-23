@@ -4,7 +4,8 @@ package daif.aymane.showsManagement.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class UpComingEpisode {
@@ -15,8 +16,8 @@ public class UpComingEpisode {
     @OneToOne
     private Episode episode;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate releaseDate;
+    @DateTimeFormat
+    private LocalDateTime releaseDate;
 
     public UpComingEpisode(){}
 
@@ -41,11 +42,13 @@ public class UpComingEpisode {
         this.episode = episode;
     }
 
-    public LocalDate getReleaseDate() {
+    public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseDate(String releaseDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime newDate = LocalDateTime.parse(releaseDate, formatter);
+        this.releaseDate = newDate;
     }
 }

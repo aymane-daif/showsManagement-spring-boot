@@ -22,6 +22,11 @@ public class TvShowController {
         return tvShowService.allShows(username);
     }
 
+    @GetMapping(path = "/{showId}")
+    public TVShow getUserShow(@PathVariable String username, @PathVariable Long showId){
+        return tvShowService.singleShow(username, showId);
+    }
+
     @PostMapping
     public TVShow createUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto) throws IOException {
         return tvShowService.addShow(username, tvShowDto);

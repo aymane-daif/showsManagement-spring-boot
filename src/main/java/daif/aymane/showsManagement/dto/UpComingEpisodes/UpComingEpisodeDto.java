@@ -9,11 +9,11 @@ public class UpComingEpisodeDto {
     private String upComingEpisode;
     private String upComingSeason;
 
-    private LocalDate releaseDate;
+    private String releaseDate;
 
     public UpComingEpisodeDto(){}
 
-    public UpComingEpisodeDto(Long upComingEpisodeId, String upComingEpisode, String upComingSeason, LocalDate releaseDate) {
+    public UpComingEpisodeDto(Long upComingEpisodeId, String upComingEpisode, String upComingSeason, String releaseDate) {
         this.upComingEpisodeId = upComingEpisodeId;
         this.upComingEpisode = upComingEpisode;
         this.upComingSeason = upComingSeason;
@@ -44,11 +44,11 @@ public class UpComingEpisodeDto {
         this.upComingSeason = upComingSeason;
     }
 
-    public LocalDate getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 }

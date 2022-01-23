@@ -31,6 +31,24 @@ public class TvShowService {
         this.imageFileRepository = imageFileRepository;
     }
 
+    public TVShow singleShow(String username, Long showId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+           if(username.equals(currentUserName)){
+               boolean isExists = appUserRepository.existsByUsername(currentUserName);
+               if(isExists){
+			//get show of specific id AND user
+                   //AppUser appUser = appUserRepository.findByUsername(currentUserName);
+                   return tvShowRepository.findByShowId(showId);
+               }else {
+                   throw new IllegalStateException("user not found");
+               }
+           }
+        }
+        throw new IllegalStateException("unauthorized");
+    }
+
     public List<TVShow> allShows(String username){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -62,10 +80,11 @@ public class TvShowService {
                     UpComingEpisodeDto upComingEpisodeDto = new UpComingEpisodeDto();
                     upComingEpisodeDto.setUpComingEpisode(tvShowDto.getUpComingEpisode());
                     upComingEpisodeDto.setUpComingSeason(tvShowDto.getUpComingSeason());
-
+                    upComingEpisodeDto.setReleaseDate(tvShowDto.getReleaseDate());
                     createdTVShow.setUpComingEpisode(upComingEpisodeService.createUpComingEpisode(
                             upComingEpisodeDto
                     ));
+
                 }
 
                 createdTVShow.setLastSeenEpisode(episodeService.createEpisode(

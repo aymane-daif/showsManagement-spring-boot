@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TvShowRepository extends JpaRepository<TVShow, Long> {
    List<TVShow> findAllByUser(AppUser user);
+   TVShow findByShowId(Long showId);
 }

@@ -20,12 +20,12 @@ public class TVShowDto {
     private String upComingEpisode;
     private String upComingSeason;
 
-
     private String posterId;
+    private String releaseDate;
 
     public TVShowDto(){}
 
-    public TVShowDto(Long showId, String name, boolean completed, ShowState showState, String showEmoji, String lastSeenEpisode, String lastSeenSeason, String upComingEpisode, String upComingSeason, String posterId) {
+    public TVShowDto(Long showId, String name, boolean completed, ShowState showState, String showEmoji, String lastSeenEpisode, String lastSeenSeason, String upComingEpisode, String upComingSeason, String posterId, String releaseDate) {
         this.showId = showId;
         this.name = name;
         this.completed = completed;
@@ -36,6 +36,7 @@ public class TVShowDto {
         this.upComingEpisode = upComingEpisode;
         this.upComingSeason = upComingSeason;
         this.posterId = posterId;
+        this.releaseDate = releaseDate;
     }
 
     public Long getShowId() {
@@ -116,5 +117,13 @@ public class TVShowDto {
 
     public void setShowEmoji(String showEmoji) {
    	this.showEmoji = showEmoji;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
