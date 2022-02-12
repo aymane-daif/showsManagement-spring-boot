@@ -27,8 +27,18 @@ public class TvShowController {
         return tvShowService.singleShow(username, showId);
     }
 
+    @DeleteMapping(path = "/{showId}")
+    public void deleteUserShow(@PathVariable String username, @PathVariable Long showId){
+        tvShowService.deleteShow(username, showId);
+    }
+
     @PostMapping
     public TVShow createUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto) throws IOException {
         return tvShowService.addShow(username, tvShowDto);
+    }
+
+    @PutMapping
+    public TVShow updateUserShow(@PathVariable String username, @RequestBody TVShowDto tvShowDto) throws IOException {
+        return tvShowService.updateShow(username, tvShowDto);
     }
 }

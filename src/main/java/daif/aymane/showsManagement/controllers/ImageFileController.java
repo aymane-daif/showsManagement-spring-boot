@@ -23,13 +23,19 @@ public class ImageFileController {
     public ImageFile uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             ImageFile imageFile = imageFileService.save(file);
-		//ResponseEntity.status(HttpStatus.OK)
-                  //  .body(String.format(imageFile.getId()))
             return imageFile;
         } catch (Exception e) {
-           // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-             //       .body(String.format("Could not upload the file"));
-		return null;
+		    return null;
+        }
+    }
+
+    @PutMapping
+    public ImageFile updateImage(@RequestParam("file") MultipartFile file) {
+        try {
+            ImageFile imageFile = imageFileService.save(file);
+            return imageFile;
+        } catch (Exception e) {
+		    return null;
         }
     }
 

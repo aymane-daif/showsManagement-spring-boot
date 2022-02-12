@@ -49,6 +49,23 @@ public class TvShowService {
         throw new IllegalStateException("unauthorized");
     }
 
+    public void deleteShow(String username, Long showId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+           if(username.equals(currentUserName)){
+               boolean isExists = appUserRepository.existsByUsername(currentUserName);
+               if(isExists){
+                    tvShowRepository.delete(tvShowRepository.findByShowId(showId));
+                    return;
+               }else {
+                   throw new IllegalStateException("user not found");
+               }
+           }
+        }
+        throw new IllegalStateException("unauthorized");
+    }
+
     public List<TVShow> allShows(String username){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -99,6 +116,58 @@ public class TvShowService {
                 );
 
 		createdTVShow.setShowEmoji(tvShowDto.getShowEmoji());
+
+                return tvShowRepository.save(createdTVShow);
+            }
+
+        }
+
+        throw new IllegalStateException("unauthorized");
+    }
+
+    public TVShow updateShow(String username, TVShowDto tvShowDto) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            if(username.equals(currentUserName)){
+                TVShow createdTVShow = new TVShow();
+                if(tvShowDto.getShowState() != null){
+                    createdTVShow.setShowState(tvShowDto.getShowState());
+                }
+                if(tvShowDto.isCompleted()) {
+                    createdTVShow.setCompleted(tvShowDto.isCompleted());
+                }
+                if(tvShowDto.getName() != null){
+                    createdTVShow.setName(tvShowDto.getName());
+                }
+                if(tvShowDto.getShowState() != null){
+                    if(tvShowDto.getShowState().equals(ShowState.ONGOING)){
+                        UpComingEpisodeDto upComingEpisodeDto = new UpComingEpisodeDto();
+                        upComingEpisodeDto.setUpComingEpisode(tvShowDto.getUpComingEpisode());
+                        upComingEpisodeDto.setUpComingSeason(tvShowDto.getUpComingSeason());
+                        upComingEpisodeDto.setReleaseDate(tvShowDto.getReleaseDate());
+                        createdTVShow.setUpComingEpisode(upComingEpisodeService.createUpComingEpisode(
+                                upComingEpisodeDto
+                        ));
+                    }
+                }
+                if(tvShowDto.getLastSeenEpisode() != null && tvShowDto.getLastSeenSeason() != null){
+                    createdTVShow.setLastSeenEpisode(episodeService.createEpisode(
+                            new Episode(null,tvShowDto.getLastSeenEpisode(),tvShowDto.getLastSeenSeason())
+                    ));
+                }
+                AppUser appUser = appUserRepository.findByUsername(currentUserName);
+                createdTVShow.setUser(appUser);
+
+                if(tvShowDto.getPosterId() != null){
+                    createdTVShow.setPostImage(
+                            imageFileRepository.findById(tvShowDto.getPosterId()).get()
+                    );
+                }
+
+                if(tvShowDto.getShowEmoji() != null){
+                    createdTVShow.setShowEmoji(tvShowDto.getShowEmoji());
+                }
 
                 return tvShowRepository.save(createdTVShow);
             }
