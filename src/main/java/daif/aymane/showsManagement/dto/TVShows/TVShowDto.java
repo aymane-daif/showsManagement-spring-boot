@@ -126,4 +126,21 @@ public class TVShowDto {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    @Override
+    public String toString() {
+        return "TVShowDto{" +
+                "showId=" + showId +
+                ", name='" + name + '\'' +
+                ", completed=" + completed +
+                ", showState=" + showState +
+                ", showEmoji='" + showEmoji + '\'' +
+                ", lastSeenEpisode='" + lastSeenEpisode + '\'' +
+                ", lastSeenSeason='" + lastSeenSeason + '\'' +
+                ", upComingEpisode='" + upComingEpisode + '\'' +
+                ", upComingSeason='" + upComingSeason + '\'' +
+                ", posterId='" + posterId + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                '}';
+    }
 }

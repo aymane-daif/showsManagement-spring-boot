@@ -130,11 +130,11 @@ public class TvShowService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             if(username.equals(currentUserName)){
-                TVShow createdTVShow = new TVShow();
+                TVShow createdTVShow = tvShowRepository.findByShowId(tvShowDto.getShowId());
                 if(tvShowDto.getShowState() != null){
                     createdTVShow.setShowState(tvShowDto.getShowState());
                 }
-                if(tvShowDto.isCompleted()) {
+                if(tvShowDto.isCompleted() != createdTVShow.isCompleted()) {
                     createdTVShow.setCompleted(tvShowDto.isCompleted());
                 }
                 if(tvShowDto.getName() != null){
@@ -165,9 +165,7 @@ public class TvShowService {
                     );
                 }
 
-                if(tvShowDto.getShowEmoji() != null){
-                    createdTVShow.setShowEmoji(tvShowDto.getShowEmoji());
-                }
+                
 
                 return tvShowRepository.save(createdTVShow);
             }
